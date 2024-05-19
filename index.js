@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const app = express();
+const morgan   = require('morgan');
+const debug    = require('debug')('vidly::startup');
 
 mongoose.connect('mongodb://localhost/vidly')
-.then(() => console.log("Connected to mongodb..."))
-.catch((err) => console.log(err.message));
+.then(() => debug("Connected to mongodb..."))
+.catch((err) => debug(err.message));
 
 
-const port = 3000;
-app.listen(port, () => {console.log(`Connected to the port number:${port}`)});
+if(app.get('env') === 'development') {
+    app.use(morgan('tiny'));
+    debug('morgan is enabled...');
+}
