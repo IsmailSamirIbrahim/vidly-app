@@ -1,11 +1,26 @@
-const mongoose = require('mongoose');
-const express = require('express');
-const app = express();
+const mongoose     = require('mongoose');
+const helmet       = require('helmet');
+const morgan       = require('morgan');
+const debugstartup = require('debug')('vidly::startup');
+const debugdb      = require('debug')('vidly::db');
+const config       = require('config');
+const express      = require('express');
+
+debugstartup('App Name: ' + config.get('name'));
 
 mongoose.connect('mongodb://localhost/vidly')
-.then(() => console.log("Connected to mongodb..."))
-.catch((err) => console.log(err.message));
+.then(() => debugdb("Connected to mongodb..."))
+.catch((err) => debugdb(err.message));
 
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({extends: true}));
+app.use(helmet());
 
-const port = 3000;
-app.listen(port, () => {console.log(`Connected to the port number:${port}`)});
+if(app.get('env') === 'development') {
+    app.use(morgan('tiny'));
+    debugstartup('morgan is enabled...');
+}
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => { debugstartup(`Listen to port ${port}`) });
