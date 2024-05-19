@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "joi": "^13.1.0",
+    "mongoose": "^8.4.0",
     "nodemon": "^3.1.0"
   }
 }
