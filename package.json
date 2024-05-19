@@ -12,6 +12,7 @@
   "dependencies": {
     "debug": "^4.3.4",
     "express": "^4.19.2",
+    "helmet": "^7.1.0",
     "joi": "^13.1.0",
     "mongoose": "^8.4.0",
     "morgan": "^1.10.0",
