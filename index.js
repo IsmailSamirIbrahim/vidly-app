@@ -5,6 +5,7 @@ const debugstartup = require('debug')('vidly::startup');
 const debugdb      = require('debug')('vidly::db');
 const config       = require('config');
 const express      = require('express');
+const genres       = require('./routes/genres');
 
 debugstartup('App Name: ' + config.get('name'));
 
@@ -21,6 +22,8 @@ if(app.get('env') === 'development') {
     app.use(morgan('tiny'));
     debugstartup('morgan is enabled...');
 }
+
+app.use('/api/genres', genres);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => { debugstartup(`Listen to port ${port}`) });
