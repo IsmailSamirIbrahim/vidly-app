@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 const helmet   = require('helmet');
 const morgan   = require('morgan');
 const debug    = require('debug')('vidly::startup');
+const config   = require('config');
 const express  = require('express');
+
+debug('App Name: ' + config.get('name'));
 
 mongoose.connect('mongodb://localhost/vidly')
 .then(() => debug("Connected to mongodb..."))
