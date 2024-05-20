@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
         return res.status(400).send(error.details[0].message);
 
     const genre = await Genre.findById(req.body.genreId);
-    if(genre === undefined)
+    if(!genre)
         res.status(404).send(`The genre with the given id:${req.body.genreId} not found.`);
 
     const movie = new Movie({
@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
 // get specific movie
 router.get('/:id', async (req, res) => {
     const movie = await Movie.findById(req.params.id);
-    if(movie === undefined)
+    if(!movie)
         res.status(404).send(`The movie with the given id:${req.params.id} not found.`);
 
     res.send(movie);
@@ -52,7 +52,7 @@ router.put('/:id', async (req, res) => {
         return res.status(400).send(error.details[0].message);
 
     const genre = await Genre.findById(req.body.genreId);
-    if(genre === undefined)
+    if(!genre)
         res.status(404).send(`The genre with the given id:${req.body.genreId} not found.`);
 
     const movie = await Movie.findByIdAndUpdate(req.params.id,
@@ -60,12 +60,12 @@ router.put('/:id', async (req, res) => {
             name: req.body.name,
             genre:{
                 _id: genre._id,
-                name: gerne.name
+                name: genre.name
             },
             numberInStock: req.body.numberInStock,
             dailyRentalRate: req.body.dailyRentalRate
         }, {new: true});
-    if(movie === undefined)
+    if(!movie)
         res.status(404).send(`The movie with the given id:${req.params.id} not found.`);
 
     res.send(movie);
@@ -74,7 +74,7 @@ router.put('/:id', async (req, res) => {
 // delete specific movie
 router.delete('/:id', async (req, res) => {
     const movie = await Movie.findByIdAndDelete(req.params.id);
-    if(movie === undefined)
+    if(!movie)
         res.status(404).send(`The movie with the given id:${req.params.id} not found.`);
 
     res.send(movie);

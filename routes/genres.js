@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
 // get specific genre
 router.get('/:id', async (req, res) => {
     const genre = await Genre.findById(req.params.id);
-    if(genre === undefined)
+    if(!genre)
         res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
     
     res.send(genre);
@@ -41,7 +41,7 @@ router.put('/:id', async (req, res) => {
         return res.status(400).send(error.details[0].message);
 
     const genre = await Genre.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
-    if(genre === undefined)
+    if(!genre)
         res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
 
     res.send(genre);
@@ -50,7 +50,7 @@ router.put('/:id', async (req, res) => {
 // delete specific genre
 router.delete('/:id', async (req, res) => {
     const genre = await Genre.findByIdAndDelete(req.params.id);
-    if(genre === undefined)
+    if(!genre)
         res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
     
     res.send(genre);

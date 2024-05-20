@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 // get specific customer
 router.get('/:id', async (req, res) => {
     const customer = await Customer.findById(req.params.id);
-    if(customer === undefined)
+    if(!customer)
         res.status(404).send(`The customer with the given id:${req.params.id} not found.`);
 
     res.send(customer);
@@ -47,7 +47,7 @@ router.put('/:id', async (req, res) => {
         phone: req.body.phone,
         isGold: req.body.isGold
     }, {new: true});
-    if(customer === undefined)
+    if(!customer)
         res.status(404).send(`The customer with the given id:${req.params.id} not found.`);
 
     res.send(customer);
@@ -56,7 +56,7 @@ router.put('/:id', async (req, res) => {
 // delete specific customer
 router.delete('/:id', async (req, res) => {
     const customer = await Customer.findByIdAndDelete(req.params.id);
-    if(customer === undefined)
+    if(!customer)
         res.status(404).send(`The customer with the given id:${req.params.id} not found.`);
 
     res.send(customer);
