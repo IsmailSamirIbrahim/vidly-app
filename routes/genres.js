@@ -3,7 +3,7 @@ const express           = require('express');
 
 const router = express.Router();
 
-// handle CRUD operations for genre object.
+// handle CRUD operations for genre endpoints.
 
 // create a new genre
 router.post('/', async (req, res) => {
@@ -47,6 +47,7 @@ router.put('/:id', async (req, res) => {
     res.send(genre);
 });
 
+// delete specific genre
 router.delete('/:id', async (req, res) => {
     const genre = await Genre.findByIdAndDelete(req.params.id);
     if(genre === undefined)
