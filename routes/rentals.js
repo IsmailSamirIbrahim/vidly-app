@@ -8,6 +8,8 @@ const router = express.Router();
 
 // handle CRUD operations for rental endpoints.
 
+// [TODO]: handle rental dateReturned and rentalFee for a rental.
+
 // create a new rental
 router.post('/', async (req, res) => {
     const { error } = validate(req.body);
@@ -47,7 +49,7 @@ router.post('/', async (req, res) => {
         }
     });
 
-    //[TODO]: use two phase commit here...
+    // [TODO]: use two phase commit here...
     await rental.save();
     await movie.save();
 
@@ -122,7 +124,7 @@ router.put('/:id', async (req, res) => {
         dailyRentalRate: movie.dailyRentalRate
     };
     
-    //[TODO]: use two phase commit here...
+    // [TODO]: use two phase commit here...
     await rental.save();
     await movie.save();
 
