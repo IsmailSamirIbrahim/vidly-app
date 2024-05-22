@@ -2,6 +2,7 @@ const {User, validate} = require('../models/user');
 const bcrypt           = require('bcrypt');
 const jwt              = require('jsonwebtoken');
 const express          = require('express');
+const auth             = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -30,6 +31,11 @@ router.post('/', async (req, res) => {
     const token = user.generateAuthToken();
    
     res.header('x-auth-token', token).send({_id: user._id, username: user.username, email: user.email, isAdmin: user.isAdmin});
+});
+
+router.get('/me', auth, async (req, res) => {
+    const user = await User.findById(req.user._id).select('-password');
+    res.send(user);
 });
 
 module.exports = router;

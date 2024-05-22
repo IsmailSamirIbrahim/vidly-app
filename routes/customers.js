@@ -1,4 +1,6 @@
 const {Customer,  validate} = require('../models/customer');
+const auth                  = require('../middleware/auth');
+const admin                 = require('../middleware/admin');
 const express               = require('express');
 
 const router = express.Router();
@@ -6,7 +8,7 @@ const router = express.Router();
 // handle CRUD operations for customer endpoints.
 
 // create a new customer
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = validate(req.body);
     if(error)
         return res.status(400).send(error.details[0].message);
@@ -37,7 +39,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // update specific customer
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const { error } = validate(req.body);
     if(error)
         return res.status(400).send(error.details[0].message);
@@ -54,7 +56,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // delete specific customer
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
     const customer = await Customer.findByIdAndDelete(req.params.id);
     if(!customer)
         res.status(404).send(`The customer with the given id:${req.params.id} not found.`);
