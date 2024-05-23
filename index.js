@@ -54,7 +54,7 @@ app.use('/api/rentals', rentals);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 
-app.use(error);
+require('./startup/logging')();
 require('./startup/routes')(app);
 require('./startup/db')();
 
