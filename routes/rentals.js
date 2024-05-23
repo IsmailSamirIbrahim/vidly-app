@@ -4,6 +4,7 @@ const {Movie}            = require('../models/movie');
 const {Genre}            = require('../models/genre');
 const auth               = require('../middleware/auth');
 const admin              = require('../middleware/admin');
+const asyncMiddleware    = require('../middleware/async');
 const express            = require('express');
 
 const router = express.Router();
@@ -13,7 +14,7 @@ const router = express.Router();
 // [TODO]: handle rental dateReturned and rentalFee for a rental.
 
 // create a new rental
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
     if(error)
         return res.status(400).send(error.details[0].message);
@@ -56,25 +57,25 @@ router.post('/', auth, async (req, res) => {
     await movie.save();
 
     res.send(rental);
-});
+}));
 
 // get all rentals
-router.get('/', async (req, res) => {
+router.get('/', asyncMiddleware(async (req, res) => {
     const rentals = await Rental.find().sort('-dateOut');
     res.send(rentals);
-});
+}));
 
 // get specific rental
-router.get('/:id', async (req, res) => {
+router.get('/:id', asyncMiddleware(async (req, res) => {
     const rental = await Rental.findById(req.params.id);
     if(!rental)
         return res.status(404).send(`A rental with the given id:${req.params.id} is not found.`);
 
     res.send(rental);
-});
+}));
 
 // update specific rental
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
     if(error)
         return res.status(400).send(error.details[0].message);
@@ -131,10 +132,10 @@ router.put('/:id', auth, async (req, res) => {
     await movie.save();
 
     res.send(rental);
-});
+}));
 
 // delete specific rental
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', [auth, admin], asyncMiddleware(async (req, res) => {
     const rental = await Rental.findByIdAndDelete(req.params.id);
     if(!rental)
         return res.status(404).send(`A rental with the given id:${req.params.id} is not found.`);
@@ -146,6 +147,6 @@ router.delete('/:id', [auth, admin], async (req, res) => {
         return res.status(404).send(`A movie with the given id:${rental.movie._id} is not found.`);
 
     res.send(rental);
-});
+}));
 
 module.exports = router;

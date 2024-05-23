@@ -2,6 +2,7 @@ const {Movie,  validate} = require('../models/movie');
 const {Genre}            = require('../models/genre');
 const auth               = require('../middleware/auth');
 const admin              = require('../middleware/admin');
+const asyncMiddleware    = require('../middleware/async');
 const express            = require('express');
 
 const router = express.Router();
@@ -9,7 +10,7 @@ const router = express.Router();
 // handle CRUD operations for movie endpoints.
 
 // create a new movie
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
     if(error)
         return res.status(400).send(error.details[0].message);
@@ -30,25 +31,25 @@ router.post('/', auth, async (req, res) => {
     await movie.save();
 
     res.send(movie);
-});
+}));
 
 // get all movies
-router.get('/', async (req, res) => {
+router.get('/', asyncMiddleware(async (req, res) => {
     const movies = await Movie.find().sort('name');
     res.send(movies);
-});
+}));
 
 // get specific movie
-router.get('/:id', async (req, res) => {
+router.get('/:id', asyncMiddleware(async (req, res) => {
     const movie = await Movie.findById(req.params.id);
     if(!movie)
         res.status(404).send(`The movie with the given id:${req.params.id} not found.`);
 
     res.send(movie);
-});
+}));
 
 // update specific movie
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
     if(error)
         return res.status(400).send(error.details[0].message);
@@ -71,15 +72,15 @@ router.put('/:id', auth, async (req, res) => {
         res.status(404).send(`The movie with the given id:${req.params.id} not found.`);
 
     res.send(movie);
-});
+}));
 
 // delete specific movie
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', [auth, admin], asyncMiddleware(async (req, res) => {
     const movie = await Movie.findByIdAndDelete(req.params.id);
     if(!movie)
         res.status(404).send(`The movie with the given id:${req.params.id} not found.`);
 
     res.send(movie);
-});
+}));
 
 module.exports = router;

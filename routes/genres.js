@@ -1,6 +1,7 @@
 const {Genre, validate} = require('../models/genre');
 const auth              = require('../middleware/auth');
 const admin             = require('../middleware/admin');
+const asyncMiddleware   = require('../middleware/async');
 const express           = require('express');
 
 const router = express.Router();
@@ -8,7 +9,7 @@ const router = express.Router();
 // handle CRUD operations for genre endpoints.
 
 // create a new genre
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
     if(error)
         return res.status(400).send(error.details[0].message);
@@ -19,25 +20,25 @@ router.post('/', auth, async (req, res) => {
     await genre.save();
 
     res.send(genre);
-});
+}));
 
 // get all genres
-router.get('/', async (req, res) => {
+router.get('/', asyncMiddleware(async (req, res) => {
     const genres = await Genre.find().sort('name');
     res.send(genres);
-});
+}));
 
 // get specific genre
-router.get('/:id', async (req, res) => {
+router.get('/:id', asyncMiddleware(async (req, res) => {
     const genre = await Genre.findById(req.params.id);
     if(!genre)
         res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
     
     res.send(genre);
-});
+}));
 
 // update specific genre
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
     if(error)
         return res.status(400).send(error.details[0].message);
@@ -47,15 +48,15 @@ router.put('/:id', auth, async (req, res) => {
         res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
 
     res.send(genre);
-});
+}));
 
 // delete specific genre
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', [auth, admin], asyncMiddleware(async (req, res) => {
     const genre = await Genre.findByIdAndDelete(req.params.id);
     if(!genre)
         res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
     
     res.send(genre);
-});
+}));
 
 module.exports = router;

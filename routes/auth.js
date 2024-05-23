@@ -1,12 +1,13 @@
-const {User}  = require('../models/user');
-const bcrypt   = require('bcrypt');
-const Joi     = require('joi');
-const express = require('express');
+const {User}          = require('../models/user');
+const bcrypt          = require('bcrypt');
+const Joi             = require('joi');
+const asyncMiddleware = require('../middleware/async');
+const express         = require('express');
 
 const router = express.Router();
 
 // handle the user login with the given email and password.
-router.post('/', async (req, res) => {
+router.post('/', asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
     if(error)
         return res.status(400).send(error.details[0].message);
@@ -22,7 +23,7 @@ router.post('/', async (req, res) => {
     const token = user.generateAuthToken();
 
     res.send(token);
-});
+}));
 
 function validate(req) {
     const schema = {
