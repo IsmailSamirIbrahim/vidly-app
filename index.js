@@ -14,6 +14,22 @@ const rentals      = require('./routes/rentals');
 const users        = require('./routes/users');
 const auth         = require('./routes/auth');
 const error        = require('./middleware/error');
+const winston      = require('winston');
+                     require('winston-mongodb');
+
+winston.exceptions.handle(
+    new winston.transports.File({filename: 'logs/uncaughtException.log'})
+);
+
+winston.rejections.handle(
+    new winston.transports.File({filename: 'logs/unhandledRejection.log'})
+);
+
+winston.add(new winston.transports.File({filename: 'logs/logfile.log'}));
+winston.add(new winston.transports.MongoDB({
+    db: 'mongodb://localhost/vidly',
+    level: 'error'
+}));
 
 debugstartup('App Name: ' + config.get('name'));
 
