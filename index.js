@@ -56,6 +56,7 @@ app.use('/api/auth', auth);
 
 app.use(error);
 require('./startup/routes')(app);
+require('./startup/db')();
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => { debugstartup(`Listen to port ${port}`) });
