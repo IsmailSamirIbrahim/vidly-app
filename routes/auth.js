@@ -26,12 +26,12 @@ router.post('/', asyncMiddleware(async (req, res) => {
 }));
 
 function validate(req) {
-    const schema = {
+    const schema = Joi.object({
         email:    Joi.string().min(5).max(50).required().email(),
         password: Joi.string().min(5).max(50).required()
-    };
+    });
 
-    return Joi.validate(req, schema);
+    return schema.validate(req);
 }
 
 module.exports = router;
