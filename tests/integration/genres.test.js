@@ -35,7 +35,7 @@ describe('/api/genres', () => {
     });
 
     describe('Get /:id', () => {
-         // Define the happy path, and then in each test, we change
+        // Define the happy path, and then in each test, we change
         // one parameter that clearly aligns with the name of the test.
         let genre;
         let id;
