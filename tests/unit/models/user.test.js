@@ -14,5 +14,5 @@ describe('user.generateAuthToken', () => {
         const decodedPayload = jwt.verify(token, config.get('jwtPrivateKey'));
 
         expect(decodedPayload).toMatchObject(payload);
-    }); 
+    });
 });
