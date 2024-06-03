@@ -4,7 +4,7 @@
   "description": "This is an imaginary service for renting out movies",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose"
+    "test": "jest --watchAll --detectOpenHandles --verbose"
   },
   "keywords": [],
   "author": "",
