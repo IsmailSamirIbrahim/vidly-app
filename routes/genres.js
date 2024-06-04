@@ -46,7 +46,7 @@ router.put('/:id', [auth, validateObjectId], asyncMiddleware(async (req, res) =>
 
     const genre = await Genre.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
     if(!genre)
-        res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
+        return res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
 
     res.send(genre);
 }));
@@ -55,7 +55,7 @@ router.put('/:id', [auth, validateObjectId], asyncMiddleware(async (req, res) =>
 router.delete('/:id', [auth, admin, validateObjectId], asyncMiddleware(async (req, res) => {
     const genre = await Genre.findByIdAndDelete(req.params.id);
     if(!genre)
-        res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
+        return res.status(404).send(`The genre with the given id:${req.params.id} not found.`);
     
     res.send(genre);
 }));
