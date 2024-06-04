@@ -1,12 +1,12 @@
 const request = require('supertest');
-const {Genre} = require('../../models/genre');
-const {User}  = require('../../models/user');
+const {Genre} = require('../../../models/genre');
+const {User}  = require('../../../models/user');
 
 let server;
 
 describe('auth middleware', () => {
     beforeEach(() => {
-        server = require('../../index');
+        server = require('../../../index');
     });
     afterEach(async () => {
         server.close();
