@@ -12,7 +12,7 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
         type: movieSchema,
         required: true
     },
-    dataOut: {
+    dateOut: {
         type: Date,
         required: true,
         default: Date.now
