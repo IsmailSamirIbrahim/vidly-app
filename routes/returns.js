@@ -2,7 +2,6 @@ const {Rental} = require('../models/rental');
 const {Movie}  = require('../models/movie');
 const auth     = require('../middleware/auth');
 const validate = require('../middleware/validate');
-const moment   = require('moment');
 const Joi      = require('joi');
 const express  = require('express');
 
